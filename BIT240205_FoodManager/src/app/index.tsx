@@ -120,32 +120,28 @@ export default function DishListScreen() {
 
     result = [...result];
 
-result.sort((a, b) => {
-  const priceA = Number(a.BIT240205_Price);
-  const priceB = Number(b.BIT240205_Price);
+    result.sort((a, b) => {
+      const priceA = Number(a.BIT240205_Price);
+      const priceB = Number(b.BIT240205_Price);
 
-  const timeA = Number(a.BIT240205_PreparationTime);
-  const timeB = Number(b.BIT240205_PreparationTime);
+      const timeA = Number(a.BIT240205_PreparationTime);
+      const timeB = Number(b.BIT240205_PreparationTime);
 
-  // Ưu tiên sắp xếp theo giá trước
-  if (filters.priceSort !== "default") {
-    const priceCompare =
-      filters.priceSort === "asc"
-        ? priceA - priceB
-        : priceB - priceA;
+      // Ưu tiên sắp xếp theo giá trước
+      if (filters.priceSort !== "default") {
+        const priceCompare =
+          filters.priceSort === "asc" ? priceA - priceB : priceB - priceA;
 
-    if (priceCompare !== 0) return priceCompare;
-  }
+        if (priceCompare !== 0) return priceCompare;
+      }
 
-  // Nếu giá bằng nhau thì sắp xếp theo thời gian
-  if (filters.timeSort !== "default") {
-    return filters.timeSort === "asc"
-      ? timeA - timeB
-      : timeB - timeA;
-  }
+      // Nếu giá bằng nhau thì sắp xếp theo thời gian
+      if (filters.timeSort !== "default") {
+        return filters.timeSort === "asc" ? timeA - timeB : timeB - timeA;
+      }
 
-  return 0;
-});
+      return 0;
+    });
 
     return result;
   }, [dishes, filters, priceError]);
@@ -197,7 +193,9 @@ result.sort((a, b) => {
 
           <Text style={styles.secondary}>
             ⏱ {item.BIT240205_PreparationTime} min •{" "}
-            {Number(item.BIT240205_PreparationTime) <= 15 ? "Quick" : "Regular"}
+            {Number(item.BIT240205_PreparationTime) <= 15
+              ? t("quick")
+              : t("regular")}
           </Text>
 
           <Text
@@ -207,23 +205,23 @@ result.sort((a, b) => {
               fontWeight: "600",
             }}
           >
-            {item.BIT240205_IsAvailable ? "Available" : "Unavailable"}
+            {item.BIT240205_IsAvailable ? t("available") : t("unavailable")}
           </Text>
         </View>
       </TouchableOpacity>
     );
   };
-const resetFilters = () => {
-  setFilters({
-    search: "",
-    categoryId: "all",
-    status: "all",
-    minPrice: "",
-    maxPrice: "",
-    priceSort: "default",
-    timeSort: "default",
-  });
-};
+  const resetFilters = () => {
+    setFilters({
+      search: "",
+      categoryId: "all",
+      status: "all",
+      minPrice: "",
+      maxPrice: "",
+      priceSort: "default",
+      timeSort: "default",
+    });
+  };
 
   const FilterButton = ({
     label,
@@ -246,30 +244,23 @@ const resetFilters = () => {
 
   return (
     <View style={styles.container}>
-<View style={styles.header}>
-  <View style={styles.headerRow}>
-    <View style={{ flex: 1 }}>
-      <Text style={styles.title}>
-        {t("foodManager")}
-      </Text>
-      <Text style={styles.subtitle}>
-        Student ID: BIT240205
-      </Text>
-    </View>
+      <View style={styles.header}>
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>{t("foodManager")}</Text>
+            <Text style={styles.subtitle}>Student ID: BIT240205</Text>
+          </View>
 
-    <TouchableOpacity
-      style={styles.languageButton}
-      onPress={() =>
-        setLanguage(language === "en" ? "vi" : "en")
-      }
-    >
-      <Text style={styles.languageText}>
-        {language === "en" ? "🇬🇧 EN" : "🇻🇳 VI"}
-      </Text>
-    </TouchableOpacity>
-  </View>
-</View>
-
+          <TouchableOpacity
+            style={styles.languageButton}
+            onPress={() => setLanguage(language === "en" ? "vi" : "en")}
+          >
+            <Text style={styles.languageText}>
+              {language === "en" ? "🇬🇧 EN" : "🇻🇳 VI"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <View style={styles.content}>
         <FlatList
@@ -280,19 +271,19 @@ const resetFilters = () => {
             <>
               <TextInput
                 style={styles.input}
-                placeholder="Search dishes..."
+                placeholder={t("search")}
                 value={filters.search}
                 onChangeText={(v) => setFilter("search", v)}
               />
 
-              <Text style={styles.label}>Category</Text>
+              <Text style={styles.label}>{t("category")}</Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 style={styles.filterRow}
               >
                 <FilterButton
-                  label="All"
+                  label={t("all")}
                   selected={filters.categoryId === "all"}
                   onPress={() => setFilter("categoryId", "all")}
                 />
@@ -306,12 +297,12 @@ const resetFilters = () => {
                 ))}
               </ScrollView>
 
-              <Text style={styles.label}>Status</Text>
+              <Text style={styles.label}>{t("status")}</Text>
               <View style={styles.wrap}>
                 {[
-                  { value: "all", label: "All" },
-                  { value: "available", label: "Available" },
-                  { value: "unavailable", label: "Unavailable" },
+                  { value: "all", label: t("all") },
+                  { value: "available", label: t("available") },
+                  { value: "unavailable", label: t("unavailable") },
                 ].map((option) => (
                   <FilterButton
                     key={option.value}
@@ -322,18 +313,18 @@ const resetFilters = () => {
                 ))}
               </View>
 
-              <Text style={styles.label}>Price Range (VND)</Text>
+              <Text style={styles.label}>{t("priceRange")}</Text>
               <View style={styles.priceRow}>
                 <TextInput
                   style={[styles.input, styles.priceInput]}
-                  placeholder="Min price"
+                  placeholder={t("minPrice")}
                   keyboardType="numeric"
                   value={filters.minPrice}
                   onChangeText={(v) => setFilter("minPrice", v)}
                 />
                 <TextInput
                   style={[styles.input, styles.priceInput]}
-                  placeholder="Max price"
+                  placeholder={t("maxPrice")}
                   keyboardType="numeric"
                   value={filters.maxPrice}
                   onChangeText={(v) => setFilter("maxPrice", v)}
@@ -341,75 +332,71 @@ const resetFilters = () => {
               </View>
 
               {priceError && (
-                <Text style={styles.error}>
-                  Invalid price range. Enter non-negative numbers with min less
-                  than or equal to max.
-                </Text>
+                <Text style={styles.error}>{t("invalidPriceRange")}</Text>
               )}
 
-<Text style={styles.label}>Sort By</Text>
+              <Text style={styles.label}>{t("sortBy")}</Text>
 
-<View style={styles.wrap}>
-  <FilterButton
-    label={
-      filters.priceSort === "asc"
-        ? "Price ↑"
-        : filters.priceSort === "desc"
-        ? "Price ↓"
-        : "Price ↕"
-    }
-    selected={filters.priceSort !== "default"}
-    onPress={() => {
-      const next =
-        filters.priceSort === "default"
-          ? "asc"
-          : filters.priceSort === "asc"
-          ? "desc"
-          : "default";
+              <View style={styles.wrap}>
+                <FilterButton
+                  label={
+                    filters.priceSort === "asc"
+                      ? `${t("sortPrice")} ↑`
+                      : filters.priceSort === "desc"
+                        ? `${t("sortPrice")} ↓`
+                        : `${t("sortPrice")} ↕`
+                  }
+                  selected={filters.priceSort !== "default"}
+                  onPress={() => {
+                    const next =
+                      filters.priceSort === "default"
+                        ? "asc"
+                        : filters.priceSort === "asc"
+                          ? "desc"
+                          : "default";
 
-      setFilter("priceSort", next);
-    }}
-  />
+                    setFilter("priceSort", next);
+                  }}
+                />
 
-  <FilterButton
-    label={
-      filters.timeSort === "asc"
-        ? "Time ↑"
-        : filters.timeSort === "desc"
-        ? "Time ↓"
-        : "Time ↕"
-    }
-    selected={filters.timeSort !== "default"}
-    onPress={() => {
-      const next =
-        filters.timeSort === "default"
-          ? "asc"
-          : filters.timeSort === "asc"
-          ? "desc"
-          : "default";
+                <FilterButton
+                  label={
+                    filters.timeSort === "asc"
+                      ? `${t("sortTime")} ↑`
+                      : filters.timeSort === "desc"
+                        ? `${t("sortTime")} ↓`
+                        : `${t("sortTime")} ↕`
+                  }
+                  selected={filters.timeSort !== "default"}
+                  onPress={() => {
+                    const next =
+                      filters.timeSort === "default"
+                        ? "asc"
+                        : filters.timeSort === "asc"
+                          ? "desc"
+                          : "default";
 
-      setFilter("timeSort", next);
-    }}
-  />
-</View>
-
+                    setFilter("timeSort", next);
+                  }}
+                />
+              </View>
 
               <TouchableOpacity
                 onPress={resetFilters}
                 style={styles.resetButton}
               >
-                <Text style={styles.resetText}>Clear Filters</Text>
+                <Text style={styles.resetText}>{t("clearFilters")}</Text>
               </TouchableOpacity>
 
               <View style={styles.listHeader}>
                 <Text style={styles.heading}>
-                  Dish List ({filteredDishes.length})
+                  {t("dishList")} ({filteredDishes.length})
                 </Text>
                 <TouchableOpacity
                   style={styles.addButton}
                   onPress={() => router.push("/dish/create")}
                 >
-                  <Text style={styles.addText}>+ Add Dish</Text>
+                  <Text style={styles.addText}>+ {t("addDish")}</Text>
                 </TouchableOpacity>
               </View>
 
@@ -598,20 +585,20 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   headerRow: {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  gap: 12,
-},
-languageButton: {
-  backgroundColor: "#ffffff",
-  paddingHorizontal: 12,
-  paddingVertical: 10,
-  borderRadius: 20,
-},
-languageText: {
-  color: "#2563eb",
-  fontWeight: "bold",
-  fontSize: 13,
-},
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+  },
+  languageButton: {
+    backgroundColor: "#ffffff",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  languageText: {
+    color: "#2563eb",
+    fontWeight: "bold",
+    fontSize: 13,
+  },
 });

@@ -1,12 +1,10 @@
-
-import React, {
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import React, { createContext, useContext, useState } from "react";
 
 const translations = {
   en: {
+    sortPrice: "Price",
+    sortTime: "Time",
+
     foodManager: "Food Manager",
     dishList: "Dish List",
     search: "Search dishes...",
@@ -50,6 +48,8 @@ const translations = {
     invalidPriceRange: "Invalid price range",
   },
   vi: {
+    sortPrice: "Giá",
+    sortTime: "Thời gian",
     foodManager: "Quản Lý Món Ăn",
     dishList: "Danh Sách Món Ăn",
     search: "Tìm kiếm món ăn...",
@@ -103,15 +103,11 @@ type LanguageContextType = {
   t: (key: TranslationKey) => string;
 };
 
-const LanguageContext = createContext<
-  LanguageContextType | undefined
->(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
-export function LanguageProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>("en");
 
   const t = (key: TranslationKey): string => {
@@ -119,9 +115,7 @@ export function LanguageProvider({
   };
 
   return (
-    <LanguageContext.Provider
-      value={{ language, setLanguage, t }}
-    >
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -131,9 +125,7 @@ export function useLanguage() {
   const context = useContext(LanguageContext);
 
   if (!context) {
-    throw new Error(
-      "useLanguage must be used inside LanguageProvider"
-    );
+    throw new Error("useLanguage must be used inside LanguageProvider");
   }
 
   return context;
