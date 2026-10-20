@@ -36,6 +36,20 @@ let savedFilters: FilterState = {
 
 export default function DishListScreen() {
   const { language, setLanguage, t } = useLanguage();
+
+  const translateCategory = (name: string) => {
+    switch (name.trim().toLowerCase()) {
+      case "main course":
+        return t("mainCourse");
+      case "fast food":
+        return t("fastFood");
+      case "drinks":
+        return t("drinks");
+      default:
+        return name;
+    }
+  };
+
   const router = useRouter();
 
   const [dishes, setDishes] = useState<Dish[]>([]);
@@ -184,7 +198,7 @@ export default function DishListScreen() {
           <Text style={styles.dishName}>{item.BIT240205_Name}</Text>
 
           <Text style={styles.secondary}>
-            {getCategoryName(item.BIT240205_DishCategoryId)}
+            {translateCategory(getCategoryName(item.BIT240205_DishCategoryId))}
           </Text>
 
           <Text style={styles.price}>
@@ -290,7 +304,7 @@ export default function DishListScreen() {
                 {categories.map((category) => (
                   <FilterButton
                     key={category.id}
-                    label={category.BIT240205_Name}
+                    label={translateCategory(category.BIT240205_Name)}
                     selected={filters.categoryId === String(category.id)}
                     onPress={() => setFilter("categoryId", String(category.id))}
                   />

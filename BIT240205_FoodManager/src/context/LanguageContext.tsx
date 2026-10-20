@@ -4,7 +4,9 @@ const translations = {
   en: {
     sortPrice: "Price",
     sortTime: "Time",
-
+    mainCourse: "Main Course",
+    fastFood: "Fast Food",
+    drinks: "Drinks",
     foodManager: "Food Manager",
     dishList: "Dish List",
     search: "Search dishes...",
@@ -48,6 +50,9 @@ const translations = {
     invalidPriceRange: "Invalid price range",
   },
   vi: {
+    mainCourse: "Món chính",
+    fastFood: "Đồ ăn nhanh",
+    drinks: "Đồ uống",
     sortPrice: "Giá",
     sortTime: "Thời gian",
     foodManager: "Quản Lý Món Ăn",
